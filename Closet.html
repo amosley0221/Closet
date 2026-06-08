@@ -17,7 +17,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
   html, body { margin: 0; padding: 0; height: 100%; }
-  body { background: radial-gradient(circle at 50% 0%, #ECE8E1, #DED9D0); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  body { background: #E7E2D9; overflow: hidden; }
+  #root { position: fixed; inset: 0; }
   * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
   ::-webkit-scrollbar { display: none; }
   input::placeholder { color: #B7B2A9; }
@@ -27,11 +28,9 @@
   @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
   @keyframes pushIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
   @keyframes pushOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
-  #stage { transform-origin: center center; }
 </style>
 </head>
 <body>
-<div id="stage"></div>
 <div id="root"></div>
 <script>
   if ('serviceWorker' in navigator) {
@@ -55,7 +54,6 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 <script src="studio/image-slot.js"></script>
 
-<script type="text/babel" src="frames/ios-frame.jsx"></script>
 <script type="text/babel" src="screens/Figure.jsx"></script>
 <script type="text/babel" src="studio/core.jsx"></script>
 <script type="text/babel" src="studio/data.jsx"></script>
@@ -75,21 +73,16 @@
 <script type="text/babel" src="studio/App.jsx"></script>
 
 <script type="text/babel">
-function Stage() {
-  const [scale, setScale] = React.useState(1);
-  React.useEffect(() => {
-    const fit = () => setScale(Math.min(1, (window.innerHeight - 36) / 874, (window.innerWidth - 24) / 402));
-    fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit);
-  }, []);
+function Shell() {
   return (
-    <div style={{ transform: `scale(${scale})`, transformOrigin: 'center center' }}>
-      <IOSDevice>
+    <div style={{ position: 'fixed', inset: 0, display: 'flex', justifyContent: 'center', background: '#E7E2D9' }}>
+      <div style={{ position: 'relative', width: '100%', maxWidth: 480, height: '100%', overflow: 'hidden', background: '#FBFAF7', boxShadow: '0 0 1px rgba(28,26,23,0.10), 0 24px 80px rgba(28,26,23,0.14)' }}>
         <App />
-      </IOSDevice>
+      </div>
     </div>
   );
 }
-ReactDOM.createRoot(document.getElementById('root')).render(<Stage />);
+ReactDOM.createRoot(document.getElementById('root')).render(<Shell />);
 </script>
 </body>
 </html>

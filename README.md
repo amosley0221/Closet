@@ -16,6 +16,7 @@ installable PWA. `Closet.html` is the app entry point.
 - **Drops** — release calendar with retailer price comparison + recommendations
 - **Discover / import** — search a catalog or paste a product link to add items without photographing everything; owned vs. wishlist
 - **On-device persistence** — wardrobe, fits, wear log, wishlist, and avatar persist in `localStorage` (Settings → Reset all data to start clean)
+- **Responsive** — fills the screen edge-to-edge on phones and sits in a centered app-width column on tablet/desktop (no device-frame mockup)
 - **Installable PWA** — web manifest, app icon, and an offline (network-first) service worker
 
 ## Build
@@ -95,7 +96,6 @@ index.html               redirects to Closet.html
 manifest.webmanifest     PWA manifest
 sw.js                    offline service worker (network-first)
 icons/                   app icons (192 / 512 / Apple touch)
-frames/ios-frame.jsx     scalable iPhone device frame
 screens/Figure.jsx       the avatar / outfit figure
 studio/                  app modules (source)
   core.jsx               theme tokens, icons, UI primitives, ItemPhoto
