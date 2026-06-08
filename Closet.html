@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Closet — Studio</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="theme-color" content="#FBFAF7" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Closet" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png" />
+<link rel="icon" type="image/png" href="icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body { background: radial-gradient(circle at 50% 0%, #ECE8E1, #DED9D0); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  ::-webkit-scrollbar { display: none; }
+  input::placeholder { color: #B7B2A9; }
+  input[type="date"] { -webkit-appearance: none; }
+  image-slot::part(frame) { background: var(--slot-tone, #ECE9E2) !important; }
+  image-slot::part(empty) { color: rgba(28,26,23,0.5); }
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  @keyframes pushIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  @keyframes pushOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+  #stage { transform-origin: center center; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="root"></div>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#1C1A17"/>
+    <rect x="34" y="20" width="32" height="46" rx="6" fill="#FBFAF7"/>
+    <circle cx="50" cy="30" r="5" fill="#9A6B4F"/>
+    <rect x="42" y="40" width="16" height="20" rx="3" fill="#B9A98F"/>
+  </svg>
+</template>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="studio/image-slot.js"></script>
+
+<script type="text/babel" src="frames/ios-frame.jsx"></script>
+<script type="text/babel" src="screens/Figure.jsx"></script>
+<script type="text/babel" src="studio/core.jsx"></script>
+<script type="text/babel" src="studio/data.jsx"></script>
+<script type="text/babel" src="studio/Home.jsx"></script>
+<script type="text/babel" src="studio/Closet.jsx"></script>
+<script type="text/babel" src="studio/Builder.jsx"></script>
+<script type="text/babel" src="studio/ItemDetail.jsx"></script>
+<script type="text/babel" src="studio/AddItem.jsx"></script>
+<script type="text/babel" src="studio/Drops.jsx"></script>
+<script type="text/babel" src="studio/Profile.jsx"></script>
+<script type="text/babel" src="studio/LogSheet.jsx"></script>
+<script type="text/babel" src="studio/WearLog.jsx"></script>
+<script type="text/babel" src="studio/Laundry.jsx"></script>
+<script type="text/babel" src="studio/Discover.jsx"></script>
+<script type="text/babel" src="studio/Wishlist.jsx"></script>
+<script type="text/babel" src="studio/AvatarSheet.jsx"></script>
+<script type="text/babel" src="studio/App.jsx"></script>
+
+<script type="text/babel">
+function Stage() {
+  const [scale, setScale] = React.useState(1);
+  React.useEffect(() => {
+    const fit = () => setScale(Math.min(1, (window.innerHeight - 36) / 874, (window.innerWidth - 24) / 402));
+    fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit);
+  }, []);
+  return (
+    <div style={{ transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <IOSDevice>
+        <App />
+      </IOSDevice>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Stage />);
+</script>
+</body>
+</html>
