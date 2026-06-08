@@ -1,0 +1,19 @@
+# Render Blueprint — deploys Closet as a static PWA.
+# Create at https://render.com -> New -> Blueprint, then point it at this repo.
+services:
+  - type: web
+    name: closet
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: false
+    headers:
+      # The service worker must be served from the app's own scope.
+      - path: /sw.js
+        name: Cache-Control
+        value: no-cache
+    routes:
+      # Serve the app shell at the site root.
+      - type: rewrite
+        source: /
+        destination: /index.html
