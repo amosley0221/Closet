@@ -67,6 +67,19 @@ Open the Render URL on your phone:
 It launches full-screen with the Closet icon, works offline, and keeps your
 wardrobe on-device.
 
+## Troubleshooting a blank screen
+
+The app shows any startup/render error on-screen (handy on a phone with no dev
+console). If you still get a blank page:
+
+- **Confirm Render is serving the build.** On the Static Site, Build Command must
+  be `npm install && npm run build` and Publish Directory must be `dist`. If the
+  publish directory is the repo root, you're serving the unbuilt prototype.
+- **Clear a stale service worker.** On the deployed URL: iOS Safari → Settings →
+  clear website data for the site (or use a Private tab once); desktop Chrome →
+  DevTools → Application → Service Workers → Unregister, then reload.
+- A failed deploy build shows in Render's deploy logs — check there first.
+
 [esbuild]: https://esbuild.github.io
 
 ## Structure

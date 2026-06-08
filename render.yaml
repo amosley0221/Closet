@@ -8,12 +8,7 @@ services:
     staticPublishPath: dist
     pullRequestPreviewsEnabled: false
     headers:
-      # The service worker must be served from the app's own scope.
+      # Don't let the service worker get stuck on a stale cached copy.
       - path: /sw.js
         name: Cache-Control
         value: no-cache
-    routes:
-      # Serve the app shell at the site root.
-      - type: rewrite
-        source: /
-        destination: /index.html

@@ -2,7 +2,7 @@
   "name": "Closet — your wardrobe",
   "short_name": "Closet",
   "description": "Photograph your wardrobe, build outfits on an avatar that looks like you, track wear & laundry, and stay ahead of drops.",
-  "start_url": "Closet.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
