@@ -32,6 +32,36 @@ function TabBar({ tab, onTab }) {
   );
 }
 
+function SideBar({ tab, onTab, onAdd }) {
+  const items = [
+    { key: 'home', icon: 'home', label: 'Home' },
+    { key: 'closet', icon: 'closet', label: 'Closet' },
+    { key: 'builder', icon: 'plus', label: 'Build' },
+    { key: 'drops', icon: 'drops', label: 'Drops' },
+    { key: 'you', icon: 'user', label: 'You' },
+  ];
+  return (
+    <div style={{ width: 248, flexShrink: 0, height: '100%', background: ST.bg2, borderRight: '1px solid ' + ST.line, display: 'flex', flexDirection: 'column', padding: '30px 18px 24px' }}>
+      <div style={{ fontFamily: SERIF, fontSize: 28, fontWeight: 600, letterSpacing: -0.5, color: ST.ink, padding: '0 13px', marginBottom: 30 }}>Closet</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {items.map((it) => {
+          const active = tab === it.key;
+          return (
+            <button key={it.key} onClick={() => onTab(it.key)} style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '12px 13px', borderRadius: 12, border: 'none', cursor: 'pointer', background: active ? ST.ink : 'transparent', width: '100%', textAlign: 'left' }}>
+              <Icon name={it.icon} size={20} color={active ? ST.bg : ST.ink} sw={active ? 2 : 1.7} />
+              <span style={{ fontFamily: SANS, fontSize: 14, fontWeight: active ? 600 : 500, color: active ? ST.bg : ST.ink }}>{it.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      <button onClick={onAdd} style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 13px', borderRadius: 12, border: '1px solid ' + ST.line2, cursor: 'pointer', background: ST.card, width: '100%' }}>
+        <Icon name="plus" size={18} color={ST.ink} sw={2} />
+        <span style={{ fontFamily: SANS, fontSize: 13, fontWeight: 600, color: ST.ink }}>Add item</span>
+      </button>
+    </div>
+  );
+}
+
 function PushView({ children }) {
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 40, background: ST.bg, boxShadow: '-12px 0 40px rgba(0,0,0,0.12)' }}>
@@ -55,6 +85,11 @@ function App() {
   const [avatarOpen, setAvatarOpen] = useState(false);
   const [toast, setToast] = useState(null);
   const toastT = useRef(0);
+  const [wide, setWide] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 700);
+  useEffect(() => {
+    const f = () => setWide(window.innerWidth >= 700);
+    f(); window.addEventListener('resize', f); return () => window.removeEventListener('resize', f);
+  }, []);
   const today = '2026-06-07';
   const todayOutfit = React.useMemo(() => buildOutfit('comfy', wardrobe, 0), [wardrobe]);
 
@@ -113,7 +148,10 @@ function App() {
   const showTabBar = stack.length === 0;
 
   return (
-    <div style={{ height: '100%', position: 'relative', background: ST.bg, overflow: 'hidden' }}>
+    <div style={{ height: '100%', width: '100%', position: 'relative', overflow: 'hidden', display: 'flex', background: ST.bg2 }}>
+      {wide && <SideBar tab={tab} onTab={nav.tab} onAdd={() => nav.addItem()} />}
+      <div style={{ position: 'relative', flex: 1, height: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', background: ST.bg }}>
+      <div style={{ position: 'relative', width: '100%', maxWidth: wide ? 600 : 'none', height: '100%', overflow: 'hidden', background: ST.bg, borderLeft: wide ? '1px solid ' + ST.line : 'none', borderRight: wide ? '1px solid ' + ST.line : 'none' }}>
       {/* active tab */}
       <div style={{ position: 'absolute', inset: 0 }}>
         <Screen ctx={ctx} key={tab === 'builder' ? 'builder' + builderNonce : tab} />
@@ -145,12 +183,14 @@ function App() {
 
       {/* toast */}
       {toast && (
-        <div style={{ position: 'absolute', bottom: showTabBar ? 110 : 40, left: '50%', transform: 'translateX(-50%)', zIndex: 60, background: ST.ink, color: ST.bg, fontFamily: SANS, fontSize: 13, fontWeight: 500, padding: '11px 18px', borderRadius: 999, boxShadow: '0 8px 24px rgba(0,0,0,0.22)', display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap', animation: 'toastIn .25s ease' }}>
+        <div style={{ position: 'absolute', bottom: (!wide && showTabBar) ? 110 : 40, left: '50%', transform: 'translateX(-50%)', zIndex: 60, background: ST.ink, color: ST.bg, fontFamily: SANS, fontSize: 13, fontWeight: 500, padding: '11px 18px', borderRadius: 999, boxShadow: '0 8px 24px rgba(0,0,0,0.22)', display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap', animation: 'toastIn .25s ease' }}>
           <Icon name="check" size={16} color={ST.bg} sw={2.2} /> {toast}
         </div>
       )}
 
-      {showTabBar && <TabBar tab={tab} onTab={nav.tab} />}
+      {!wide && showTabBar && <TabBar tab={tab} onTab={nav.tab} />}
+      </div>
+      </div>
     </div>
   );
 }

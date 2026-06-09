@@ -24,8 +24,11 @@ function Discover({ ctx }) {
 
   let results = CATALOG.filter((p) => store === 'All' || p.store === store);
   if (q.trim() && !isLink) {
-    const s = q.toLowerCase();
-    results = results.filter((p) => (p.name + ' ' + p.brand + ' ' + p.store + ' ' + p.cat).toLowerCase().includes(s));
+    const toks = q.toLowerCase().split(/\s+/).filter(Boolean);
+    results = results.filter((p) => {
+      const hay = (p.name + ' ' + p.brand + ' ' + p.store + ' ' + p.cat).toLowerCase();
+      return toks.every((t) => hay.includes(t));
+    });
   }
 
   const wished = (id) => ctx.wishlist.some((x) => x.id === 'cat-' + id);

@@ -16,7 +16,7 @@ installable PWA. `Closet.html` is the app entry point.
 - **Drops** — release calendar with retailer price comparison + recommendations
 - **Discover / import** — search a catalog or paste a product link to add items without photographing everything; owned vs. wishlist
 - **On-device persistence** — wardrobe, fits, wear log, wishlist, and avatar persist in `localStorage` (Settings → Reset all data to start clean)
-- **Responsive** — fills the screen edge-to-edge on phones and sits in a centered app-width column on tablet/desktop (no device-frame mockup)
+- **Responsive** — full-screen bottom-tab layout on phones; a left **sidebar** nav + centered content column on tablet/desktop (no device-frame mockup)
 - **Installable PWA** — web manifest, app icon, and an offline (network-first) service worker
 
 ## Build
