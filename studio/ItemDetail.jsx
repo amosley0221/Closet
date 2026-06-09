@@ -26,7 +26,7 @@ function ItemDetail({ ctx, id }) {
 
       {/* hero photo */}
       <div style={{ padding: '4px 22px 0' }}>
-        <ItemPhoto slotId={'garment-' + it.id} tone={it.tone} fit="contain" label={'Drop a photo of your ' + it.name} radius={22} style={{ width: '100%', height: 300 }} />
+        <ItemImage src={it.image} slotId={'garment-' + it.id} tone={it.tone} fit="contain" label={'Drop a photo of your ' + it.name} radius={22} style={{ width: '100%', height: 300 }} />
       </div>
 
       <div style={{ padding: '20px 24px 0' }}>

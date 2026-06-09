@@ -1,14 +1,18 @@
-# Render Blueprint — deploys Closet as a static PWA.
+# Render Blueprint — deploys Closet as a Node web service.
+# It serves the built static app AND proxies live product search via /api/search.
 # Create at https://render.com -> New -> Blueprint, then point it at this repo.
+#
+# After it deploys, add your search API key in the Render dashboard:
+#   Service -> Environment -> SERPAPI_KEY = <your SerpAPI key>
+# Without the key the app still works using its built-in catalog.
 services:
   - type: web
     name: closet
-    runtime: static
+    runtime: node
+    plan: free
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    startCommand: node server.mjs
     pullRequestPreviewsEnabled: false
-    headers:
-      # Don't let the service worker get stuck on a stale cached copy.
-      - path: /sw.js
-        name: Cache-Control
-        value: no-cache
+    envVars:
+      - key: SERPAPI_KEY
+        sync: false

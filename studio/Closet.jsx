@@ -57,7 +57,7 @@ function Closet({ ctx }) {
         {items.map((it) => (
           <button key={it.id} onClick={() => nav.openItem(it.id)} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>
             <div style={{ position: 'relative' }}>
-              <ItemPhoto slotId={'garment-' + it.id} tone={it.tone} fit="contain" label={it.name} radius={16} style={{ width: '100%', height: 168 }} />
+              <ItemImage src={it.image} slotId={'garment-' + it.id} tone={it.tone} fit="contain" label={it.name} radius={16} style={{ width: '100%', height: 168 }} />
               {it.sneaker && <div style={{ position: 'absolute', top: 9, right: 9, background: 'rgba(255,255,255,0.85)', borderRadius: 7, padding: '3px 7px', fontFamily: SANS, fontSize: 8.5, fontWeight: 600, letterSpacing: 0.5, color: ST.ink, pointerEvents: 'none' }}>SNEAKER</div>}
             </div>
             <div style={{ marginTop: 8 }}>

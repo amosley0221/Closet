@@ -146,4 +146,18 @@ function ItemPhoto({ slotId, tone = '#D8D3CA', label = 'Drop a photo', radius = 
   );
 }
 
-Object.assign(window, { ST, SERIF, SANS, LABEL, Icon, Thumb, Chip, TopBar, Btn, fmtMoney, fmtDate, monthsOwned, lightMix, ItemPhoto });
+// ── ItemImage — shows a real product image when the item has one (e.g. from
+// live search), otherwise falls back to the user-droppable ItemPhoto slot.
+function ItemImage({ src, slotId, tone = '#D8D3CA', label = 'Drop a photo', radius = 14, fit = 'contain', style = {} }) {
+  const [err, setErr] = React.useState(false);
+  if (src && !err) {
+    return (
+      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: radius, background: '#FFFFFF', boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.06)', ...style }}>
+        <img src={src} alt={label} onError={() => setErr(true)} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: fit === 'cover' ? 'cover' : 'contain', display: 'block' }} />
+      </div>
+    );
+  }
+  return <ItemPhoto slotId={slotId} tone={tone} label={label} radius={radius} fit={fit} style={style} />;
+}
+
+Object.assign(window, { ST, SERIF, SANS, LABEL, Icon, Thumb, Chip, TopBar, Btn, fmtMoney, fmtDate, monthsOwned, lightMix, ItemPhoto, ItemImage });

@@ -5,8 +5,8 @@
   "description": "Closet — your wardrobe PWA (Studio direction)",
   "scripts": {
     "build": "node build.mjs",
-    "start": "node build.mjs && npx --yes serve dist -l ${PORT:-8000}",
-    "serve": "npx --yes serve dist -l ${PORT:-8000}"
+    "start": "node server.mjs",
+    "dev": "node build.mjs && node server.mjs"
   },
   "dependencies": {
     "esbuild": "0.25.0",

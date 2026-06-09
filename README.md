@@ -34,29 +34,49 @@ npm run build     # -> dist/
 ## Running locally
 
 ```sh
-npm start         # builds, then serves dist/ at http://localhost:8000
+npm run dev       # builds, then runs the Node server at http://localhost:8000
 # or, after a build:
-npm run serve
+npm start
 ```
 
-Open `http://localhost:8000/` (redirects to `Closet.html`). Serve over HTTP, not
-`file://` — the service worker needs a real origin.
+Open `http://localhost:8000/`. Serve over HTTP, not `file://` — the service
+worker needs a real origin. `npm start` runs `server.mjs`, which serves `dist/`
+and exposes `/api/search` (live search; see below).
 
 > For a zero-build preview, the repo root also has the original prototype
 > (`Closet.html` loading `.jsx` via in-browser Babel). The production path is the
 > esbuild build above.
 
+## Live product search
+
+`server.mjs` exposes `/api/search?q=…`, which proxies **SerpAPI's Google
+Shopping** engine so real products (photos + prices) appear in **Add items**.
+The API key stays on the server.
+
+- Set `SERPAPI_KEY` (get a key at [serpapi.com] — free tier ~100 searches/mo).
+- **Without a key the app still works** — it falls back to the built-in catalog,
+  so search never breaks.
+- Results are cached in-memory for 10 min to conserve quota.
+
 ## Deploy to Render
 
-This repo includes a [`render.yaml`](./render.yaml) Blueprint.
+This repo includes a [`render.yaml`](./render.yaml) Blueprint that deploys a
+**Node web service** (it serves the app *and* runs the search proxy).
 
 1. Push this repo to GitHub (already done if you're reading this on GitHub).
-2. Go to **[render.com](https://render.com) → New → Blueprint** and select this repo.
-   Render reads `render.yaml` and creates a **Static Site** that runs
-   `npm install && npm run build` and publishes `dist/`.
-   - Or do it manually: **New → Static Site**, Build Command
-     `npm install && npm run build`, Publish Directory `dist`.
-3. Render gives you an HTTPS URL like `https://closet-xxxx.onrender.com`.
+2. Go to **[render.com](https://render.com) → New → Blueprint** and select this
+   repo. Render reads `render.yaml` and creates a **Web Service** that runs
+   `npm install && npm run build` and starts `node server.mjs`.
+3. In the service: **Environment → add `SERPAPI_KEY`** = your key, then redeploy.
+4. Render gives you an HTTPS URL like `https://closet-xxxx.onrender.com`.
+
+> **Migrating from the old static site:** Render can't convert a Static Site
+> into a Web Service. Delete the old `closet` static site first, then re-apply
+> the Blueprint (or create **New → Web Service** manually with the build/start
+> commands above). On Render's free tier a web service sleeps after inactivity,
+> so the first load after idle can take ~30–60s.
+
+[serpapi.com]: https://serpapi.com
 
 ## Install on your phone
 
